@@ -28,6 +28,7 @@ public class UserController {
 
     @GetMapping("/find/{username}")
     public ResponseEntity<User> findUserByUsername(@PathVariable String username) {
+
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }
