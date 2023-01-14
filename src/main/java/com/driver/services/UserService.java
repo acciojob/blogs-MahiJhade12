@@ -24,11 +24,10 @@ public class UserService {
     }
 
     public void updateUser(User user){
-
         userRepository3.save(user);
     }
 
     public User findUserByUsername(String username){
-        return (User) userRepository3.findUserByUsername(username);
+        return userRepository3.findUserByUsername(username);
     }
 }
