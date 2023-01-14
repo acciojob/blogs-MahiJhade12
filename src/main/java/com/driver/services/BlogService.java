@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class BlogService {
@@ -99,5 +100,9 @@ public class BlogService {
         userRepository1.save(user);
 
         blogRepository1.deleteById(blogId);
+
+
+
+
     }
 }

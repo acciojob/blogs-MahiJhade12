@@ -86,6 +86,8 @@ public class ImageService {
         String[] dimensionsArray = dimensions.split("X");
 
         return Integer.valueOf(dimensionsArray[0]) * Integer.valueOf(dimensionsArray[1]);
-
     }
+
+
+
 }

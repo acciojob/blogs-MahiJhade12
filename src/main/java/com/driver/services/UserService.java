@@ -1,5 +1,6 @@
 package com.driver.services;
-import com.driver.models.User;
+
+import com.driver.models.*;
 import com.driver.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Service
 public class UserService {
+
     @Autowired
     UserRepository userRepository3;
 
@@ -24,10 +26,12 @@ public class UserService {
     }
 
     public void updateUser(User user){
+
         userRepository3.save(user);
     }
 
     public User findUserByUsername(String username){
-        return userRepository3.findUserByUsername(username);
+
+        return userRepository3.findByUsername(username);
     }
 }

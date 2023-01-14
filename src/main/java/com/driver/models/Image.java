@@ -3,11 +3,13 @@ package com.driver.models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "image")
+@Table
 public class Image {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String description;
 
     private String dimension;

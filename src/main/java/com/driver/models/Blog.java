@@ -1,4 +1,5 @@
 package com.driver.models;
+
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -6,11 +7,13 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-public class Blog {
+@Table
+public class Blog{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String title;
 
     private String content;
