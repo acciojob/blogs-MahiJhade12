@@ -4,7 +4,11 @@ import com.driver.repositories.BlogRepository;
 import com.driver.repositories.ImageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
 @Service
 public class ImageService {
     @Autowired
@@ -13,42 +17,20 @@ public class ImageService {
     BlogRepository blogRepository;
     public Image createAndReturn(Blog blog, String description, String dimensions){
         //create an image based on given parameters and add it to the imageList of given blog
-        Image newImage = new Image();
-        newImage.setDescription(description);
-        newImage.setDimensions(dimensions);
-        // newImage.setBlog(blog);
-
-        Blog blogFromRepo = blogRepository.findById(blog.getId()).get();
-
-        newImage.setBlog(blogFromRepo);
-
-        List<Image> imageList = blogFromRepo.getImageList();
-
-        imageList.add(newImage);
-
-        blogFromRepo.setImageList(imageList);
-
-        newImage.setBlog(blogFromRepo);
-
-        blogRepository.save(blogFromRepo);
-
-        return newImage;
+        Image image=new Image(description,dimensions);
+        image.setBlog(blog);
+        List<Image> res=blog.getImageList();
+        if(res==null){
+            res=new ArrayList<>();
+        }
+        res.add(image);
+        blog.setImageList(res);
+        imageRepository2.save(image);
+        blogRepository.save(blog);
+        return image;
     }
     public void deleteImage(Image image){
-
-        Image imageToBeDeleted = imageRepository2.findById(image.getId()).get();
-
-        if(imageToBeDeleted == null)
-            return;
-
-        int blogId = imageToBeDeleted.getBlog().getId();
-
-        Blog blog = blogRepository.findById(blogId).get();
-        List<Image> blogImageList = blog.getImageList();
-        blogImageList.remove(imageToBeDeleted);
-        blog.setImageList(blogImageList);
-        blogRepository.save(blog);
-        imageRepository2.deleteById(image.getId());
+        imageRepository2.delete(image);
     }
     public Image findById(int id) {
         return imageRepository2.findById(id).get();
@@ -57,14 +39,28 @@ public class ImageService {
         //Find the number of images of given dimensions that can fit in a screen having `screenDimensions`
         //In case the image is null, return 0
         //Image image = imageRepository2.findById(id).get();
-        if(image == null)
+
+        if(image == null || screenDimensions.length() == 0)
             return 0;
+
         int imageDimensions = extractInteger(image.getDimensions());
+
         int screenDimensions1 = extractInteger(screenDimensions);
+
         return screenDimensions1/imageDimensions;
+
     }
+
     public int extractInteger(String dimensions){
+
         String[] dimensionsArray = dimensions.split("X");
+        if (screenDimensions.split("X").length == 2 || Objects.nonNull(image)) {
+            Integer maxLength = Integer.parseInt(screenDimensions.split("X")[0]) / Integer.parseInt(image.getDimensions().split("X")[0]) ;
+            Integer maxBreadth = Integer.parseInt(screenDimensions.split("X")[1]) / Integer.parseInt(image.getDimensions().split("X")[1]);
+            return maxLength * maxBreadth;
+        }
+        return 0;
+
         return Integer.valueOf(dimensionsArray[0]) * Integer.valueOf(dimensionsArray[1]);
     }
 }
